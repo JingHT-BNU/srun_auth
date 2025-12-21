@@ -45,7 +45,6 @@ def get_info():
 	return i
 
 def get_token():
-	# print("获取token")
 	global token
 	get_challenge_params={
 		"callback": callback,
