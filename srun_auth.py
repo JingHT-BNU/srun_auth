@@ -6,21 +6,29 @@ from encryption.srun_sha1 import *
 from encryption.srun_base64 import *
 from encryption.srun_xencode import *
 from config import *
+import socket
 def _t():
 	return str(int(time.time() * 1000))
 
 header={
 	'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0'
 }
-get_challenge_api = init_url + "/cgi-bin/get_challenge"
-srun_portal_api = init_url + "/cgi-bin/srun_portal"
+get_challenge_api = f"http://{init_url}/cgi-bin/get_challenge"
+srun_portal_api = f"http://{init_url}/cgi-bin/srun_portal"
 n = '200'
 ac_id='1'
 enc = "srun_bx1"
 t = _t()
 callback = f'jQuery{callback_number}_{t}'
-get_info_api = init_url + "/cgi-bin/rad_user_info?callback=" + callback
+get_info_api = f"http://{init_url}/cgi-bin/rad_user_info?callback=" + callback
 
+if not ip:
+	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	try:
+		s.connect(('172.16.202.202', 80))
+		ip = s.getsockname()[0]
+	finally:
+		s.close()
 
 def get_chksum():
 	chkstr = token+username

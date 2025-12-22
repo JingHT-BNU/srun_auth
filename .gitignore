@@ -2,3 +2,7 @@ config.py
 __pycache__
 encryption/__pycache__
 .idea
+build
+dist
+test.py
+srun_auth.spec
