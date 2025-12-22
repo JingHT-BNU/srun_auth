@@ -13,14 +13,37 @@ def _t():
 header={
 	'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0'
 }
-get_challenge_api = f"http://{init_url}/cgi-bin/get_challenge"
-srun_portal_api = f"http://{init_url}/cgi-bin/srun_portal"
+url = ''
+if not init_url_wireless and not init_url:
+	print('init url not found')
+	exit(1)
+if switch:
+	url = init_url_wireless
+elif switch is None:
+	from detect_connection import detect_network_type_multilingual
+	result = detect_network_type_multilingual()
+	if result and isinstance(result, dict):
+		if result.get('ethernet', False):
+			url = init_url
+		elif result.get('wifi', False):
+			url = init_url_wireless
+else:
+	url = init_url
+if not url:
+	if init_url_wireless and not init_url:
+		url = init_url_wireless
+	else:
+		url = init_url
+
+
+get_challenge_api = f"http://{url}/cgi-bin/get_challenge"
+srun_portal_api = f"http://{url}/cgi-bin/srun_portal"
 n = '200'
 ac_id='1'
 enc = "srun_bx1"
 t = _t()
 callback = f'jQuery{callback_number}_{t}'
-get_info_api = f"http://{init_url}/cgi-bin/rad_user_info?callback=" + callback
+get_info_api = f"http://{url}/cgi-bin/rad_user_info?callback=" + callback
 
 if not ip:
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
