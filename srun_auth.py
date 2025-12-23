@@ -5,7 +5,11 @@ from encryption.srun_md5 import *
 from encryption.srun_sha1 import *
 from encryption.srun_base64 import *
 from encryption.srun_xencode import *
-from config import *
+try:
+	from config import *
+except ModuleNotFoundError:
+	from generate_config import *
+
 import socket
 def _t():
 	return str(int(time.time() * 1000))
